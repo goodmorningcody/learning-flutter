@@ -32,12 +32,14 @@ class WeeklyForecastList extends StatelessWidget {
   Widget build(BuildContext context) {
     final DateTime currentDate = DateTime.now();
     final TextTheme textTheme = Theme.of(context).textTheme;
-    final List<DailyForecast> forecasts = Server.getDailyForecastList();
-
-    return SingleChildScrollView(
-      child: Column(
-        children: forecasts.map((dailyForecast) {
-          return Card(
+    return ListView.builder(
+      itemCount: 7,
+      itemBuilder: (context, index) {
+        final DailyForecast dailyForecast = Server.getDailyForecastByID(index);
+        print(dailyForecast.getDate(currentDate.day).toString());
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
             child: ListTile(
               leading: Text(
                 dailyForecast.getDate(currentDate.day).toString(),
@@ -53,9 +55,9 @@ class WeeklyForecastList extends StatelessWidget {
                 style: textTheme.subtitle2,
               ),
             ),
-          );
-        }).toList(),
-      ),
+          ),
+        );
+      },
     );
   }
 }
